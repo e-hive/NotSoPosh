@@ -13,6 +13,7 @@ function prompt {
     if (Test-Path $configPath) {
         try {
             $config = Get-Content $configPath | ConvertFrom-Json
+            $script:__enableIcons = $config.enableIcons
             $script:__showNewLine = $config.showNewLine
             $script:__showMachineContext = $config.showMachineContext
             $script:__showUserContext = $config.showUserContext
@@ -20,6 +21,7 @@ function prompt {
             $script:__showBranchContext = $config.showBranchContext
         } catch {
             # Fallback to defaults if config is corrupted
+            $script:__enableIcons = $true
             $script:__showNewLine = $false
             $script:__showMachineContext = $false
             $script:__showUserContext = $false
@@ -28,6 +30,7 @@ function prompt {
         }
     } else {
         # Defaults if no config file exists
+        $script:__enableIcons = $true
         $script:__showNewLine = $false
         $script:__showMachineContext = $false
         $script:__showUserContext = $false
@@ -48,7 +51,8 @@ function prompt {
                 $subscriptionId = az account show --query "id" --output tsv
                 $subscriptionName = az account show --query "name" --output tsv
                 $script:__subscriptionId = $subscriptionId
-                $script:__subscriptionName = "| ☁️ $subscriptionName "
+                $icon = if ($script:__enableIcons) { "☁️ " } else { "" }
+                $script:__subscriptionName = "| $icon$subscriptionName "
                 return $script:__subscriptionName
             } catch {
                 return "Azure lookup failed"
@@ -85,7 +89,8 @@ function prompt {
                     $headContent = Get-Content $headFile -TotalCount 1
                     if ($headContent -match "ref: refs/heads/(.+)") {
                         $script:__gitRoot = $currentPath
-                        $script:__gitBranch = "| 🌿 $($matches[1]) "
+                        $icon = if ($script:__enableIcons) { "🌿 " } else { "" }
+                        $script:__gitBranch = "| $icon$($matches[1]) "
                         return $script:__gitBranch
                     }
                 }
@@ -102,11 +107,13 @@ function prompt {
     }
 
     if ($script:__showMachineContext -eq $true) {
-        $customPrompt += "| 🖥️ $env:COMPUTERNAME "
+        $icon = if ($script:__enableIcons) { "🖥️ " } else { "" }
+        $customPrompt += "| $icon$env:COMPUTERNAME "
     }
 
     if ($script:__showUserContext -eq $true) {
-        $customPrompt += "| 👤 $env:USERNAME "
+        $icon = if ($script:__enableIcons) { "👤 " } else { "" }
+        $customPrompt += "| $icon$env:USERNAME "
     }
 
     if ($script:__showAzSubscriptionContext -eq $true) {
