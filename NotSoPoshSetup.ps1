@@ -3,7 +3,7 @@
 NotSoPosh Setup - Configures a custom PowerShell prompt with optional enhancements.
 
 .NOTES
-- The script deploys the custom prompt script to a local folder named ".pwshprompt".
+- The script deploys the custom prompt script to a local folder named ".notsoposh".
 - It updates the PowerShell PROFILE to include the custom prompt configuration.
 - The PowerShell session is restarted at the end of the script to apply the changes.
 - To remove customisations rerun this script.

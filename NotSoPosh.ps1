@@ -51,7 +51,7 @@ function prompt {
                 $script:__subscriptionName = "| ☁️ $subscriptionName "
                 return $script:__subscriptionName
             } catch {
-                Write-Host $_
+                return "Azure lookup failed"
             }
         } else {
             return $script:__subscriptionName

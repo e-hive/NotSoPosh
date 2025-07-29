@@ -7,15 +7,15 @@ function Deploy-LocalScript {
     # Get the local user's directory
     $userDirectory = [System.Environment]::GetFolderPath("UserProfile")
 
-    # Define the full path to the .pwshprofile folder
-    $profileFolderPath = Join-Path -Path $userDirectory -ChildPath $LocalScriptFolderName
+    # Define the full path to the .notsoposh folder
+    $notsoposhFolderPath = Join-Path -Path $userDirectory -ChildPath $LocalScriptFolderName
 
-    # Check if the .pwshprofile folder exists, create it if it doesn't
-    if (-not (Test-Path $profileFolderPath)) {
-        New-Item -Path $profileFolderPath -ItemType Directory
-        Write-Host "DEPLOY: Created folder: $profileFolderPath"
+    # Check if the .notsoposh folder exists, create it if it doesn't
+    if (-not (Test-Path $notsoposhFolderPath)) {
+        New-Item -Path $notsoposhFolderPath -ItemType Directory
+        Write-Host "DEPLOY: Created folder: $notsoposhFolderPath"
     } else {
-        Write-Host "DEPLOY: Folder already exists: $profileFolderPath"
+        Write-Host "DEPLOY: Folder already exists: $notsoposhFolderPath"
     }
 
     $deployedFiles = @()
