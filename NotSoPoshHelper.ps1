@@ -23,7 +23,7 @@ function Deploy-LocalScript {
     # Copy each file to the folder
     foreach ($sourceFilePath in $SourceFilePaths) {
         if (Test-Path $sourceFilePath) {
-            $destinationPath = Join-Path -Path $profileFolderPath -ChildPath (Split-Path -Path $sourceFilePath -Leaf)
+            $destinationPath = Join-Path -Path $notsoposhFolderPath -ChildPath (Split-Path -Path $sourceFilePath -Leaf)
             Copy-Item -Path $sourceFilePath -Destination $destinationPath -Force
             Write-Host "DEPLOY: Copied file to: $destinationPath"
             $deployedFiles += $destinationPath
