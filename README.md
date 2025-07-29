@@ -6,6 +6,7 @@ A configurable PowerShell prompt enhancer that adds contextual information to yo
 
 NotSoPosh provides an interactive setup menu to customize your PowerShell prompt with the following optional components:
 
+- **Icons in Prompt**: Enable or disable icons for prompt elements
 - **New Line Separator**: Add a blank line between prompts - makes history easier to parse
 - **Machine Name Context**: Display the computer name
 - **User Context**: Show the current username

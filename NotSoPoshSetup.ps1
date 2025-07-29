@@ -11,6 +11,7 @@ NotSoPosh Setup - Configures a custom PowerShell prompt with optional enhancemen
 
 . ".\NotSoPoshHelper.ps1"
 
+$enableIcons = $true
 $showNewLine = $false
 $showUserContext = $false
 $showMachineContext = $false
@@ -24,6 +25,7 @@ if (Test-Path $localConfigPath) {
     try {
         Write-Host "NOTSOPOSH SETUP: Loading existing configuration from setup directory..."
         $existingConfig = Get-Content $localConfigPath | ConvertFrom-Json
+        $enableIcons = $existingConfig.enableIcons
         $showNewLine = $existingConfig.showNewLine
         $showUserContext = $existingConfig.showUserContext
         $showMachineContext = $existingConfig.showMachineContext
@@ -37,6 +39,7 @@ if (Test-Path $localConfigPath) {
 
 # Build prompt Options array
 $options = @()
+$options += "Enable Icons in prompt elements"
 $options += "Include New Line between prompts"
 $options += "Include Machine Name Context in your prompt"
 $options += "Include Current User Context in your prompt"
@@ -62,6 +65,9 @@ if ($gitAvailable) {
 $defaultSelected = @()
 $optionIndex = 0
 
+if ($enableIcons) { $defaultSelected += $optionIndex }
+$optionIndex++
+
 if ($showNewLine) { $defaultSelected += $optionIndex }
 $optionIndex++
 
@@ -79,6 +85,7 @@ if ($gitAvailable -and $showBranchContext) { $defaultSelected += $optionIndex }
 $selectedOptions = Show-MenuWrapper -Title "Configure NotSoPosh Options" -Options $options -DefaultSelected $defaultSelected
 
 # Process selected options - reset all to false first, then set selected ones to true
+$enableIcons = $false
 $showNewLine = $false
 $showMachineContext = $false
 $showUserContext = $false
@@ -86,6 +93,14 @@ $showSubscriptionContext = $false
 $showBranchContext = $false
 
 $optionIndex = 0
+if($selectedOptions -contains $optionIndex) {
+    Write-Host "NOTSOPOSH SETUP: Enabling Icons in prompt elements"
+    $enableIcons = $true
+} else {
+    Write-Host "NOTSOPOSH SETUP: Disabling Icons in prompt elements"
+}
+$optionIndex++
+
 if($selectedOptions -contains $optionIndex) {
     Write-Host "NOTSOPOSH SETUP: Including New Line between prompts"
     $showNewLine = $true
@@ -131,6 +146,7 @@ if ($gitAvailable) {
 
 # Create configuration object
 $config = @{
+    enableIcons = $enableIcons
     showNewLine = $showNewLine
     showMachineContext = $showMachineContext
     showUserContext = $showUserContext
